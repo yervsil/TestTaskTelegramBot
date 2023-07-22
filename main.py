@@ -3,7 +3,7 @@ import telebot
 from controllers.controllers import TodoBotController
 from views.views import TodoBotView
 
-bot = telebot.TeleBot("yourTgToken")
+bot = telebot.TeleBot("6302194812:AAHtFxvECUXx6T7Bd6BpMKAc6RWDzBhL4fE")
 controller = TodoBotController()
 view = TodoBotView()
 
@@ -31,7 +31,11 @@ def mark_done(message):
     except:
         bot.reply_to(message, "Пожалуйста, укажите индекс выполненной записи")
         return
-    controller.mark_task_done(user_id, task_id)
+    try:
+        controller.mark_task_done(user_id, task_id)
+    except:
+        bot.reply_to(message, "Список задач пуст")
+        return 
     bot.reply_to(message, "Задача отмечена как выполненная!")
 
 @bot.message_handler(commands=['list'])
@@ -48,7 +52,11 @@ def delete_task(message):
     except:
         bot.reply_to(message, "Пожалуйста, укажите индекс удаляемой записи")
         return
-    controller.delete_task(user_id, task_id)
+    try:
+        controller.delete_task(user_id, task_id)
+    except:
+        bot.reply_to(message, "Список задач пуст")
+        return 
     bot.reply_to(message, "Задача успешно удалена!")
 
 
