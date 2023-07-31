@@ -1,4 +1,4 @@
-# TestTaskTelegramBot
+# toDoTelegramBot
 ### To launch the application:
 
 
@@ -6,7 +6,7 @@
  
 
 
-2. In the root directory install all dependencies by by command:
+2. In the root directory install all dependencies by the command:
 ```dotenv
 pip install -r requirements.txt
 ```

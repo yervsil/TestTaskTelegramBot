@@ -34,21 +34,18 @@ class TodoBotController:
     def add_task(self, user_id, description):
         cursor = self.conn.cursor()
         cursor.execute('INSERT INTO todo_lists (user_id, description) VALUES (?, ?)', (user_id, description))
-        # list_id = cursor.lastrowid
-        # cursor.execute('UPDATE todo_lists SET count_of_user_id = count_of_user_id + 1 WHERE user_id = ? AND id = ?', (user_id, list_id))
         self.conn.commit()
-       # return list_id
 
     def mark_task_done(self, user_id, task_id):
         cursor = self.conn.cursor()
-        cursor.execute('select id from (select ROW_NUMBER() OVER () AS pk, id from (SELECT id FROM todo_lists WHERE user_id = ?)) where pk = ?', (user_id, task_id,))
+        cursor.execute('select id from (SELECT ROW_NUMBER() OVER () AS pk, id FROM todo_lists WHERE user_id = ?) where pk = ?', (user_id, task_id,))
         task_id = cursor.fetchone()[0]
         cursor.execute('UPDATE todo_lists SET done = TRUE WHERE user_id = ? AND id = ?', (user_id, task_id,))
         self.conn.commit()
 
     def delete_task(self, user_id, task_id):
         cursor = self.conn.cursor()
-        cursor.execute('select id from (select ROW_NUMBER() OVER () AS pk, id from (SELECT id FROM todo_lists WHERE user_id = ?)) where pk = ?', (user_id, task_id,))
+        cursor.execute('select id from (SELECT ROW_NUMBER() OVER () AS pk, id FROM todo_lists WHERE user_id = ?) where pk = ?', (user_id, task_id,))
         task_id = cursor.fetchone()[0]
         cursor.execute('DELETE FROM todo_lists WHERE user_id = ? AND id = ?', (user_id, task_id, ))
         self.conn.commit()
